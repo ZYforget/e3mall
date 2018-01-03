@@ -7,4 +7,5 @@ import cn.e3mall.common.pojo.TreeNode;
 public interface ItemCatService {
 
 	public List<TreeNode> getCatList(long parentId);
+	
 }

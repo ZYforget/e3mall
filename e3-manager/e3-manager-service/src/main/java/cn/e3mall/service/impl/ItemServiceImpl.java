@@ -1,5 +1,6 @@
 package cn.e3mall.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,12 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import cn.e3mall.common.pojo.DataGridResult;
+import cn.e3mall.common.utils.E3Result;
+import cn.e3mall.common.utils.IDUtils;
+import cn.e3mall.mapper.TbItemDescMapper;
 import cn.e3mall.mapper.TbItemMapper;
 import cn.e3mall.pojo.TbItem;
+import cn.e3mall.pojo.TbItemDesc;
 import cn.e3mall.pojo.TbItemExample;
 import cn.e3mall.service.ItemService;
 
@@ -19,6 +24,9 @@ public class ItemServiceImpl implements ItemService {
 
 	@Autowired
 	private TbItemMapper tbItemMapper;
+	
+	@Autowired
+	private TbItemDescMapper tbItemDescMapper;
 	@Override
 	public TbItem getItemById(long id) {
 		TbItem tbItem = tbItemMapper.selectByPrimaryKey(id);
@@ -40,6 +48,28 @@ public class ItemServiceImpl implements ItemService {
 		result.setTotal(total);
 		result.setRows(list);
 		return result;
+	}
+	@Override
+	public E3Result ItemAdd(TbItem item, String desc) {
+		long itemId = IDUtils.genItemId();
+		item.setId(itemId);
+		//商品状态，1-正常，2-下架，3-删除
+		item.setStatus((byte) 1);
+		item.setCreated(new Date());
+		item.setUpdated(new Date());
+		tbItemMapper.insert(item);
+		TbItemDesc itemDesc=new TbItemDesc();
+		itemDesc.setItemId(itemId);
+		itemDesc.setItemDesc(desc);
+		itemDesc.setCreated(new Date());
+		itemDesc.setUpdated(new Date());
+		tbItemDescMapper.insert(itemDesc);
+		return E3Result.ok();
+	}
+	@Override
+	public TbItem findById(long id) {
+		TbItem tbItem = tbItemMapper.selectByPrimaryKey(id);
+		return tbItem;
 	}
 
 }
