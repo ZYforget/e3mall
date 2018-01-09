@@ -7,12 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.e3mall.common.pojo.DataGridResult;
 import cn.e3mall.common.utils.E3Result;
 import cn.e3mall.pojo.TbItem;
+import cn.e3mall.search.service.SearchItemService;
 import cn.e3mall.service.ItemService;
 
 @Controller
@@ -20,6 +20,9 @@ public class ItemController {
 
 	@Autowired
 	private ItemService itemService;
+	
+	@Autowired
+	private SearchItemService searchItemService;
 	
 	@RequestMapping("/item/{id}")
 	@ResponseBody
@@ -43,9 +46,16 @@ public class ItemController {
 	@RequestMapping("/rest/item/query/item/desc/{id}")
 	@ResponseBody
 	public Map findById(@PathVariable("id") long id){
-		TbItem tbItem = itemService.findById(id);
+		TbItem tbItem = itemService.getItemById(id);
 		Map map=new HashMap();
 		map.put("status", 200);
 		return map;
+	}
+	
+	@RequestMapping("/index/item/import")
+	@ResponseBody
+	public E3Result addSolr(){
+		E3Result result = searchItemService.importItemList();
+		return result;
 	}
 }
