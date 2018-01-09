@@ -8,16 +8,16 @@
 	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd">
 	
 	<!-- 配置redis单机版 -->
-	<!-- <bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+	<bean id="jedisPool" class="redis.clients.jedis.JedisPool">
 		<constructor-arg name="host" value="192.168.25.130"/>
 		<constructor-arg name="port" value="6379"/>
 	</bean>
 	<bean id="jedisClientPool" class="cn.e3mall.common.jedis.JedisClientPool">
 		<property name="jedisPool" ref="jedisPool"></property>
-	</bean> -->
+	</bean>
 	
 	<!-- 配置集群版redis -->
-	<bean id="jedisCluster" class="redis.clients.jedis.JedisCluster">
+	<!-- <bean id="jedisCluster" class="redis.clients.jedis.JedisCluster">
 		<constructor-arg>
 			<set>
 				<bean class="redis.clients.jedis.HostAndPort">
@@ -49,5 +49,5 @@
 	</bean>
 	<bean id="jedisClientCluster" class="cn.e3mall.common.jedis.JedisClientCluster">
 		<property name="jedisCluster" ref="jedisCluster"></property>
-	</bean>
+	</bean> -->
 </beans>
